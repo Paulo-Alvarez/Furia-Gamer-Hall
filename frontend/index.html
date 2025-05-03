@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gamer Hall - FURIA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gamer Hall - FURIA</h1>
+    
+    <form id="fan-form" enctype="multipart/form-data">
+      <div class="form-grid">
+        <label>Nome Completo:
+          <input type="text" id="nomeInput" name="nome" placeholder="Seu nome completo" required>
+        </label>
+        <label>CPF:
+          <input type="text" id="cpfInput" name="cpf" placeholder="000.000.000-00" required>
+        </label>
+        <label>Endereço:
+          <input type="text" name="endereco" placeholder="Rua, número, cidade">
+        </label>
+        <label>Último evento gamer que participou:
+          <input type="text" name="evento" placeholder="Nome do evento">
+        </label>
+        <label>Documento de identificação (RG ou CNH):
+          <input type="file" name="documento" accept=".jpg,.jpeg,.png,.pdf" required>
+        </label>
+        <label>Perfil no X:
+          <input type="url" id="twitterInput" name="twitterUrl" placeholder="https://x.com/seuPerfil" required>
+        </label>
+        <div id="twitterStatus"></div>
+      </div>
+
+      <label class="interesses-label">Interesses em e-sports:</label>
+      <div class="checkbox-grid">
+        <label><input type="checkbox" name="interesses" value="CS2"> CS2</label>
+        <label><input type="checkbox" name="interesses" value="LoL"> LoL</label>
+        <label><input type="checkbox" name="interesses" value="Valorant"> Valorant</label>
+        <label><input type="checkbox" name="interesses" value="R6"> R6</label>
+        <label><input type="checkbox" name="interesses" value="PUBG"> PUBG</label>
+        <label><input type="checkbox" name="interesses" value="Apex"> Apex</label>
+        <label><input type="checkbox" name="interesses" value="Rocket League"> Rocket League</label>
+      </div>
+
+      <div class="button-container">
+        <button type="submit">Enviar</button>
+      </div>
+    </form>
+    <p id="mensagemErro"></p>
+  </div>
+  <script src="script.js"></script>
+  
+<div id="scannerScreen" class="hidden">
+  <div class="scanner-box">
+    <h2>🔍 Escaneando o usuário...</h2>
+    <div class="scanner-animation"></div>
+  </div>
+</div>
+<div id="resultadoScreen" class="hidden">
+  <div class="resultado-box">
+    <h2>🎯 Perfil detectado!</h2>
+    <p id="resultadoTexto"></p>
+    <div id="recomendacoesLinks"></div>
+    <button onclick="reiniciarFormulario()">Voltar</button>
+  </div>
+</div>
+</body>
+</html>
