@@ -49,7 +49,7 @@ async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    executablePath: '/usr/bin/google-chrome'
+    executablePath: '/usr/bin/chromium'
   });
   const page = await browser.newPage();
   await page.goto(twitterUrl, { waitUntil: 'networkidle2', timeout: 60000 });
