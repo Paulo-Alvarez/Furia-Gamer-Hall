@@ -46,7 +46,11 @@ async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
     throw new Error('URL informada não é do Twitter.');
   }
 
-  const browser = await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath: '/usr/bin/google-chrome'
+  });
   const page = await browser.newPage();
   await page.goto(twitterUrl, { waitUntil: 'networkidle2', timeout: 60000 });
 
