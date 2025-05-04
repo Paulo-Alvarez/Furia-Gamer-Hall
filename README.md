@@ -21,14 +21,14 @@ O número de requisições foi pensado para conter apenas o necessário, para n�
 
 
 
-Após concluir o envio, o usuário será levando para uma tela de Scanner, onde seus dados estarão sendo processados e verificados pelo código do Gamer Hall.
+Após concluir o envio, o usuário será levado para uma tela de Scanner, onde seus dados estarão sendo processados e verificados pelo código do Gamer Hall.
 Nessa etapa é quando se verifica o documento do usuário, para ver se bate com o nome completo informado.
 
 É aí também onde a conta do X informada é analisada para determinar se o usuário é um gamer mais assíduo ou se é alguém que está ainda dando os primeiros passos no universo gamer.
 
 ![image](https://github.com/user-attachments/assets/9ed0b565-9518-4ae7-b9fd-c56168c1cc87)
 
-Após os dados serem processados, se tudo estiver nos conformes com a verificação do documento, o usuário é direcionado a uma tela de resultado que terá umm resultado diferente a depender do *nível gamer* que o usuário apresentar.
+Após os dados serem processados, se tudo estiver nos conformes com a verificação do documento, o usuário é direcionado a uma tela de resultado que terá um resultado diferente a depender do *nível gamer* que o usuário apresentar.
 
 Essas funcionalidades foram implementadas para gerar identificação e proximidade com o público, buscando aproximar ainda mais o usuário da marca.
 
@@ -89,6 +89,6 @@ O desenvolvimento do Gamer Hall envolveu tecnologias robustas e integradas, com 
 
 # Considerações Finais
 
-Ao se apoiar na estratégia **Know Your Fan**, o Gamer Hall oferece interações mais personalizadas e relevantes, reforçando o vínculo entre a marca e sua comunidade. 
+Ao se apoiar na estratégia **Know Your Fan**, o Gamer Hall proporciona interações personalizadas e dados valiosos que aproximam a **FURIA** de quem realmente vive o universo gamer.
 
 A combinação de **tecnologia acessível, interação voltada à cultura gamer e conhecimento profundo do público** cria uma experiência mais imersiva, divertida e conectada com a **FURIA**.
