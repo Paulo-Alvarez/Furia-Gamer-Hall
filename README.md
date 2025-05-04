@@ -19,6 +19,7 @@ O layout é centrado e organizado, com margens amplas para garantir que os eleme
 O usuário poderá interagir com o **Gamer Hall** ao concluir o seu formulário, provendo assim meios para que a **FURIA** entenda mais do seu fã. 
 O número de requisições foi pensado para conter apenas o necessário, para não afastar o público.
 
+![image](https://github.com/user-attachments/assets/8ce60813-fa4d-44a7-bec9-0cf618212237)
 
 
 Após concluir o envio, o usuário será levado para uma tela de Scanner, onde seus dados estarão sendo processados e verificados pelo código do Gamer Hall.
