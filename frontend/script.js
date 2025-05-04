@@ -1,8 +1,10 @@
 document.getElementById('fan-form').addEventListener('submit', async function (e) {
   e.preventDefault();
 
+// Cria um objeto FormData para pegar os dados do formulário
   const form = this;
   const formData = new FormData(form);
+// Obtém os valores dos campos do formulário  
   const nome = formData.get('nome')?.trim();
   const cpf = formData.get('cpf')?.trim();
   const documento = formData.get('documento');
@@ -13,9 +15,11 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
   status.textContent = '';
   status.style.color = '';
 
+// Exibe a tela de escaneamento e oculta a tela de resultados 
   document.getElementById('scannerScreen').classList.remove('hidden');
   document.getElementById('resultadoScreen').classList.add('hidden');
 
+// Valida os dados preenchidos pelo usuário  
   if (!nome) return alert("Por favor, preencha seu nome.");
   if (!validarCPF(cpf)) return alert("CPF inválido!");
   if (!documento) return alert("Por favor, envie um documento de identificação.");
@@ -24,6 +28,7 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
   }
 
   try {
+// Exibe o status de "Processando..."    
     status.textContent = "⏳ Processando...";
     status.style.color = "white";
 
@@ -35,6 +40,7 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
 
     console.log("Resposta /upload:", data);
 
+// Exibe erro caso o nome informado não seja encontrado ou seja inconsistente
     if (data.status === 'erro' && data.mensagem.includes('nome informado')) {
       document.getElementById('scannerScreen').classList.add('hidden');
       status.textContent = "❌ O nome informado não foi encontrado ou está diferente no documento.";
@@ -42,6 +48,7 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
       return;
     }
 
+// Exibe mensagem de erro geral, caso haja algum erro
     if (data.status === 'erro') {
       document.getElementById('scannerScreen').classList.add('hidden');
       status.textContent = "❌ " + data.mensagem;
@@ -49,9 +56,11 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
       return;
     }
 
+// Caso não haja erro, oculta a tela de escaneamento e exibe a tela de resultados
     document.getElementById('scannerScreen').classList.add('hidden');
     document.getElementById('resultadoScreen').classList.remove('hidden');
 
+// Exibe links personalizados com base nos dados de e-sports ou não, facilmente editável    
     const resultadoTexto = document.getElementById('resultadoTexto');
     resultadoTexto.innerHTML = data.relacionadoEsports
       ? `
@@ -69,9 +78,11 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
         🔗 <a href="https://furia.gg/noticias" target="_blank">Notícias da FURIA</a><br>
       `;
 
+// Limpa o formulário
     form.reset();
     status.textContent = '';
   } catch (err) {
+// Em caso de erro na requisição, exibe uma mensagem    
     console.error("Erro geral:", err);
     document.getElementById('scannerScreen').classList.add('hidden');
     status.textContent = "❌ Ocorreu um erro no processamento.";
@@ -79,6 +90,7 @@ document.getElementById('fan-form').addEventListener('submit', async function (e
   }
 });
 
+// Função para validar o CPF
 function validarCPF(cpf) {
   cpf = cpf.replace(/[^\d]+/g, '');
   if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -89,9 +101,10 @@ function validarCPF(cpf) {
   soma = 0;
   for (let i = 0; i < 10; i++) soma += +cpf[i] * (11 - i);
   resto = (soma * 10) % 11; if (resto >= 10) resto = 0;
+// Retorna verdadeiro se o CPF for válido  
   return resto === +cpf[10];
 }
-
+// Função para reiniciar o formulário
 function reiniciarFormulario() {
   document.getElementById('resultadoScreen').classList.add('hidden');
   document.getElementById('scannerScreen').classList.add('hidden');

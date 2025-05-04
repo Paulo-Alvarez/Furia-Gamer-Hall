@@ -1,3 +1,4 @@
+// Importa os módulos necessários
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
@@ -10,6 +11,7 @@ const stringSimilarity = require('string-similarity');
 const app = express();
 const PORT = 3000;
 
+// Configura middlewares
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,22 +21,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
+// Criação do diretório de uploads se ele não existir
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
   console.log('Diretório de uploads criado em', uploadDir);
 }
 
+// Configuração do multer para armazenamento de arquivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadDir),
   filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
 });
 const upload = multer({ storage });
 
+// Verifica se a URL informada é do X/Twitter
 function isTwitterUrl(url) {
   return /^https?:\/\/(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/?$/.test(url);
 }
 
+// Função que usa Puppeteer para buscar a bio do usuário no Twitter e verificar se está relacionada a e-sports
 async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
   if (!isTwitterUrl(twitterUrl)) {
     throw new Error('URL informada não é do Twitter.');
@@ -50,6 +56,7 @@ async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
 
   await browser.close();
 
+// Lista de palavras-chave relacionadas a e-sports
   const keywords = [
     'furia', 'e-sport', 'esports', 'cs:', 'valorant', 'league of legends', 'cbLOL',
     'fortnite', 'dota', 'overwatch', 'apex', 'cod', 'pubg', 'rocket league',
@@ -77,12 +84,15 @@ async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
     'apexlegends', 'oceanicgaming', 'midgaming', 'gamerdad', 'outlast', 'destiny2', 'halo', 'pubgconsole', 'wowclassic',
     'minecraft', 'clashroyalepro', 'geforce', 'gamersteam', 'xboxesports', 'ps5gaming', 'gaminggear', 'gamingchairs'
   ];
+  // Verifica se a bio contém qualquer uma das palavras-chave
   const relacionadoEsports = keywords.some(palavra => bio.toLowerCase().includes(palavra));
 
+  // Caminho para o arquivo de banco de dados local
   const dbPath = path.join(__dirname, 'dados.json');
   const registros = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
   const index = registros.findIndex(reg => reg.nome.toLowerCase() === nomeUsuario.toLowerCase());
 
+  // Cria novo registro se não existir
   if (index === -1) {
     registros.push({
       nome: nomeUsuario,
@@ -94,16 +104,19 @@ async function fetchTwitterInfo(twitterUrl, nomeUsuario) {
       enviadoEm: new Date().toISOString()
     });
   } else {
+    // Atualiza o registro existente
     registros[index].twitter = {
       url: twitterUrl,
       bio,
       relacionadoEsports
     };
   }
+  // Salva os dados atualizados no arquivo
   fs.writeFileSync(dbPath, JSON.stringify(registros, null, 2));
   return relacionadoEsports;
 }
 
+// Rota para upload de documento e validação do nome via OCR e do perfil do Twitter
 app.post('/upload', upload.single('documento'), async (req, res) => {
   console.log('Dados recebidos:', req.body);
   console.log('Arquivo recebido:', req.file);
@@ -121,17 +134,18 @@ app.post('/upload', upload.single('documento'), async (req, res) => {
   }
 
   let textoExtraido = '';
+// Utiliza Tesseract para reconhecer texto no documento de imagem enviado
   if (arquivo) {
     try {
       const resultado = await Tesseract.recognize(arquivo, 'por');
       textoExtraido = resultado.data.text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
       console.log('Texto extraído do documento:', textoExtraido);
-
+// Compara o nome informado com o texto extraído
       const nomeDigitado = dados.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
       const palavras = textoExtraido.split(/[\n\s,.:;()\[\]"]+/).filter(Boolean);
       let melhoresMatchs = [];
-
+// Verifica similaridade entre o nome informado e trechos do texto extraído
       for (let i = 0; i < palavras.length; i++) {
         const trecho = palavras.slice(i, i + 5).join(' ');
         const score = stringSimilarity.compareTwoStrings(nomeDigitado, trecho);
@@ -157,6 +171,7 @@ app.post('/upload', upload.single('documento'), async (req, res) => {
     }
   }
 
+// Salva os dados no arquivo local
   const registros = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
   const registro = {
     ...dados,
@@ -166,6 +181,7 @@ app.post('/upload', upload.single('documento'), async (req, res) => {
   registros.push(registro);
   fs.writeFileSync(dbPath, JSON.stringify(registros, null, 2));
 
+// Processa X/Twitter se fornecido
   const twitterUrl = dados.twitterUrl;
   if (twitterUrl) {
     try {
@@ -185,7 +201,7 @@ app.post('/upload', upload.single('documento'), async (req, res) => {
     });
   }
 });
-
+// Rota alternativa para vincular apenas o Twitter ao nome
 app.post('/vincular-twitter', async (req, res) => {
   const { twitterUrl, nome } = req.body;
 
